@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MotoPartes RD — Repuestos de Motos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">MOTO<span>PARTES</span><em>RD</em></a>
+    <ul class="nav-links">
+      <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#categorias">Categorías</a></li>
+      <li><a href="#marcas">Marcas</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-search">
+        <input type="text" id="nav-search-input" placeholder="Buscar pieza, marca…" oninput="buscarTexto(this.value)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <button class="cart-btn" onclick="abrirCarrito()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span id="badge-count" class="badge hidden">0</span>
+      </button>
+      <button class="hamburger" onclick="toggleMenu()" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div id="mobile-menu">
+  <a href="#catalogo" onclick="closeMenu()">Catálogo</a>
+  <a href="#categorias" onclick="closeMenu()">Categorías</a>
+  <a href="#marcas" onclick="closeMenu()">Marcas</a>
+  <a href="#contacto" onclick="closeMenu()">Contacto</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-overlay"></div>
+  <img class="hero-bg-img" src="https://cdn.pixabay.com/photo/2018/05/08/15/29/engine-3382957_1280.jpg" alt="Moto">
+  <div class="hero-content">
+    <div class="hero-tag">Envíos a todo el país en 24 horas</div>
+    <h1>Repuestos<br>para tu <span>moto</span></h1>
+    <p>Honda · Yamaha · Suzuki · KTM · Kawasaki · Bajaj</p>
+    <div class="hero-ctas">
+      <a href="#catalogo" class="cta-red">Ver catálogo</a>
+      <a href="https://wa.me/18091234567" target="_blank" class="cta-outline">WhatsApp</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div><strong>2,500+</strong><span>Productos</span></div>
+    <div><strong>6</strong><span>Marcas</span></div>
+    <div><strong>24h</strong><span>Despacho</span></div>
+    <div><strong>10+</strong><span>Años</span></div>
+  </div>
+</section>
+
+<!-- BUSCADOR -->
+<section id="buscador">
+  <div class="wrap">
+    <h3>Busca por tu moto</h3>
+    <div class="buscador-row">
+      <div class="bf"><label>Marca</label>
+        <select id="sel-marca" onchange="actualizarModelos()">
+          <option value="">Todas las marcas</option>
+          <option>Honda</option><option>Yamaha</option><option>Suzuki</option>
+          <option>KTM</option><option>Kawasaki</option><option>Bajaj</option>
+        </select>
+      </div>
+      <div class="bf"><label>Modelo</label><select id="sel-modelo"><option value="">Elige marca primero</option></select></div>
+      <div class="bf"><label>Año</label>
+        <select id="sel-anio">
+          <option value="">Cualquier año</option>
+          <option>2024</option><option>2023</option><option>2022</option>
+          <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
+        </select>
+      </div>
+      <div class="bf"><label>Categoría</label>
+        <select id="sel-cat">
+          <option value="">Todas</option>
+          <option>Motor</option><option>Frenos</option><option>Suspensión</option>
+          <option>Eléctrico</option><option>Transmisión</option><option>Filtros</option>
+          <option>Carrocería</option><option>Escape</option>
+        </select>
+      </div>
+      <button class="btn-buscar" onclick="buscarAvanzado()">Buscar</button>
+    </div>
+  </div>
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalogo">
+  <div class="wrap">
+    <div class="cat-top">
+      <h2>Catálogo de Productos</h2>
+      <select id="sort-sel" onchange="sortProductos()">
+        <option value="">Ordenar: Destacados</option>
+        <option value="asc">Precio: Menor a Mayor</option>
+        <option value="desc">Precio: Mayor a Menor</option>
+        <option value="az">Nombre A–Z</option>
+      </select>
+    </div>
+    <div class="filtros-bar">
+      <div id="filtros-marcas">
+        <button class="fmarca activo" onclick="filtrarMarca('todas',this)">Todas</button>
+        <button class="fmarca" onclick="filtrarMarca('Honda',this)">Honda</button>
+        <button class="fmarca" onclick="filtrarMarca('Yamaha',this)">Yamaha</button>
+        <button class="fmarca" onclick="filtrarMarca('Suzuki',this)">Suzuki</button>
+        <button class="fmarca" onclick="filtrarMarca('KTM',this)">KTM</button>
+        <button class="fmarca" onclick="filtrarMarca('Kawasaki',this)">Kawasaki</button>
+        <button class="fmarca" onclick="filtrarMarca('Bajaj',this)">Bajaj</button>
+      </div>
+      <span id="results-label"></span>
+    </div>
+    <div id="productos-grid"></div>
+    <div id="no-results" class="no-results hidden">No se encontraron productos.</div>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section id="categorias">
+  <div class="wrap">
+    <h2>Categorías</h2>
+    <p class="categorias-subtitle">Explora por tipo de repuesto — haz clic para filtrar el catálogo</p>
+    <div id="cat-grid"></div>
+  </div>
+</section>
+
+<!-- MARCAS -->
+<section id="marcas">
+  <div class="wrap">
+    <h2>Marcas disponibles</h2>
+    <div class="marcas-row">
+      <div class="marca-pill" onclick="filtrarMarca('Honda',null)">Honda</div>
+      <div class="marca-pill" onclick="filtrarMarca('Yamaha',null)">Yamaha</div>
+      <div class="marca-pill" onclick="filtrarMarca('Suzuki',null)">Suzuki</div>
+      <div class="marca-pill" onclick="filtrarMarca('KTM',null)">KTM</div>
+      <div class="marca-pill" onclick="filtrarMarca('Kawasaki',null)">Kawasaki</div>
+      <div class="marca-pill" onclick="filtrarMarca('Bajaj',null)">Bajaj</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="wrap contacto-wrap">
+    <div class="contacto-left">
+      <h2>Contáctanos</h2>
+      <p>Listos para ayudarte a encontrar la pieza exacta que necesitas.</p>
+      <div class="c-links">
+        <a href="https://wa.me/18091234567" target="_blank" class="c-link">
+          <div class="c-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.126 1.535 5.857L.057 24l6.305-1.654A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.651-.506-5.176-1.391l-.371-.221-3.844 1.008 1.026-3.737-.242-.384A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></div>
+          <div><strong>WhatsApp</strong><span>809-123-4567</span></div>
+        </a>
+        <div class="c-link"><div class="c-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><strong>Email</strong><span>info@motopartesrd.com</span></div></div>
+        <div class="c-link"><div class="c-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><strong>Dirección</strong><span>Av. 27 de Febrero, Santo Domingo</span></div></div>
+        <div class="c-link"><div class="c-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><strong>Horario</strong><span>Lun–Sáb 8am–6pm</span></div></div>
+      </div>
+    </div>
+    <div class="contacto-right">
+      <h3>Envíanos un mensaje</h3>
+      <div class="cf-g"><input type="text" id="cf-nombre" placeholder="Tu nombre"></div>
+      <div class="cf-g"><input type="tel" id="cf-tel" placeholder="Tu teléfono"></div>
+      <div class="cf-g"><textarea id="cf-msg" rows="4" placeholder="¿Qué pieza necesitas?"></textarea></div>
+      <button class="cta-red" onclick="enviarContacto()">Enviar mensaje</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap footer-wrap">
+    <div class="footer-brand">
+      <div class="logo footer-logo">MOTO<span>PARTES</span><em>RD</em></div>
+      <p>Repuestos originales y alternativos. Envíos a todo el territorio nacional.</p>
+    </div>
+    <div class="footer-col"><h4>Navegación</h4><a href="#catalogo">Catálogo</a><a href="#categorias">Categorías</a><a href="#marcas">Marcas</a><a href="#contacto">Contacto</a></div>
+    <div class="footer-col"><h4>Marcas</h4><a href="#" onclick="filtrarMarca('Honda',null);return false">Honda</a><a href="#" onclick="filtrarMarca('Yamaha',null);return false">Yamaha</a><a href="#" onclick="filtrarMarca('Suzuki',null);return false">Suzuki</a><a href="#" onclick="filtrarMarca('KTM',null);return false">KTM</a><a href="#" onclick="filtrarMarca('Kawasaki',null);return false">Kawasaki</a><a href="#" onclick="filtrarMarca('Bajaj',null);return false">Bajaj</a></div>
+    <div class="footer-col"><h4>Contacto</h4><a href="https://wa.me/18091234567" target="_blank">809-123-4567</a><a href="mailto:info@motopartesrd.com">info@motopartesrd.com</a></div>
+  </div>
+  <div class="footer-bottom">© 2025 MotoPartes RD — Hecho en República Dominicana</div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- MODAL PRODUCTO -->
+<div id="modal-overlay" onclick="cerrarModal()"></div>
+<div id="modal-producto"><button class="modal-close" onclick="cerrarModal()">✕</button><div id="modal-body"></div></div>
+
+<!-- CARRITO -->
+<div id="carrito-overlay" onclick="cerrarCarrito()"></div>
+<div id="carrito-panel">
+  <div class="cp-header"><h3>Tu Carrito</h3><button onclick="cerrarCarrito()">✕</button></div>
+  <div id="cp-body"></div>
+  <div class="cp-footer">
+    <div class="cp-totals">
+      <div class="cp-row"><span>Subtotal</span><strong id="c-subtotal">RD$0</strong></div>
+      <div class="cp-row"><span>Envío</span><strong id="c-envio">Se calcula al pagar</strong></div>
+      <div class="cp-row total-row"><span>Total</span><strong id="c-total">RD$0</strong></div>
+    </div>
+    <button class="cta-red full" onclick="abrirPago()">Proceder al pago</button>
+    <button class="btn-outline full" onclick="cerrarCarrito()">Seguir comprando</button>
+  </div>
+</div>
+
+<!-- MODAL PAGO -->
+<div id="pago-overlay" onclick="cerrarPago()"></div>
+<div id="pago-modal">
+  <button class="modal-close" onclick="cerrarPago()">✕</button>
+
+  <!-- PASO 1 -->
+  <div class="pago-step" id="paso-1">
+    <div class="paso-header">
+      <div class="pasos-ind"><span class="pi active">1</span><span class="pi-line"></span><span class="pi">2</span><span class="pi-line"></span><span class="pi">3</span></div>
+      <h3>Datos de entrega</h3>
+    </div>
+    <div class="pago-form">
+      <div class="pf-row">
+        <div class="pf-g"><label>Nombre completo *</label><input type="text" id="p-nombre" placeholder="Juan García"></div>
+        <div class="pf-g"><label>Teléfono *</label><input type="tel" id="p-tel" placeholder="809-000-0000"></div>
+      </div>
+      <div class="pf-g full"><label>Dirección *</label><input type="text" id="p-dir" placeholder="Calle, No., Sector"></div>
+      <div class="pf-row">
+        <div class="pf-g">
+          <label>Ciudad *</label>
+          <select id="p-ciudad">
+            <option value="">Selecciona ciudad</option>
+            <option>Santo Domingo</option><option>Santiago</option><option>San Pedro de Macorís</option><option>La Romana</option><option>Puerto Plata</option><option>Higüey</option><option>San Francisco de Macorís</option><option>Otra ciudad</option>
+          </select>
+        </div>
+        <div class="pf-g">
+          <label>Método de envío</label>
+          <select id="p-envio" onchange="recalcTotal()">
+            <option value="0">Recoger en tienda (Gratis)</option>
+            <option value="250">Envío en SDQ (RD$250)</option>
+            <option value="450">Envío nacional (RD$450)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="pago-resumen">
+      <h4>Resumen del pedido</h4>
+      <div id="pago-items-list"></div>
+      <div class="pr-total"><span>Total estimado:</span><strong id="pago-total-est">RD$0</strong></div>
+    </div>
+    <button class="cta-red full" onclick="irPaso2()">Continuar al pago</button>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="pago-step hidden" id="paso-2">
+    <div class="paso-header">
+      <div class="pasos-ind"><span class="pi done">✓</span><span class="pi-line done"></span><span class="pi active">2</span><span class="pi-line"></span><span class="pi">3</span></div>
+      <h3>Método de pago</h3>
+    </div>
+    <div class="metodos-pago">
+      <div class="mp-card active" onclick="selMetodo(this,'tarjeta')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Tarjeta crédito / débito</div>
+      <div class="mp-card" onclick="selMetodo(this,'transferencia')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg> Transferencia bancaria</div>
+      <div class="mp-card" onclick="selMetodo(this,'efectivo')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg> Pago contra entrega</div>
+    </div>
+    <div id="form-tarjeta" class="pago-form">
+      <div class="pf-g full"><label>Número de tarjeta</label><input type="text" id="card-num" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)"></div>
+      <div class="pf-g full"><label>Nombre en la tarjeta</label><input type="text" id="card-name" placeholder="Como aparece en la tarjeta"></div>
+      <div class="pf-row">
+        <div class="pf-g"><label>Expiración</label><input type="text" id="card-exp" placeholder="MM/AA" maxlength="5" oninput="fmtExp(this)"></div>
+        <div class="pf-g"><label>CVV</label><input type="text" id="card-cvv" placeholder="000" maxlength="4"></div>
+      </div>
+    </div>
+    <div id="form-transferencia" class="pago-form hidden">
+      <div class="bank-info">
+        <h4>Datos bancarios</h4>
+        <p><strong>Banco Popular:</strong> Cta. Corriente 123-456789-0</p>
+        <p><strong>BanReservas:</strong> Cta. Ahorro 987-654321-0</p>
+        <p><strong>Scotiabank:</strong> Cta. Corriente 555-112233-0</p>
+        <p class="bank-note">Envía el comprobante por WhatsApp al 809-123-4567.</p>
+      </div>
+    </div>
+    <div id="form-efectivo" class="pago-form hidden">
+      <div class="bank-info">
+        <p>Pagarás al recibir tu pedido. El repartidor llevará cambio.</p>
+        <p class="bank-note">Disponible en Santo Domingo, Santiago y principales ciudades.</p>
+      </div>
+    </div>
+    <div class="pf-row pago-nav">
+      <button class="btn-outline" onclick="irPaso1()">Volver</button>
+      <button class="cta-red" onclick="confirmarPedido()">Confirmar pedido</button>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="pago-step hidden" id="paso-3">
+    <div class="confirmacion">
+      <div class="conf-check">✓</div>
+      <h3>¡Pedido confirmado!</h3>
+      <p>Gracias por tu compra. Recibirás confirmación por WhatsApp en breve.</p>
+      <div id="conf-resumen"></div>
+      <div class="conf-btns">
+        <a href="https://wa.me/18091234567" target="_blank" class="cta-red">Contactar por WhatsApp</a>
+        <button class="btn-outline" onclick="finalizarCompra()">Seguir comprando</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
